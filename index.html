@@ -1,0 +1,36 @@
+<!--
+   index.html
+   A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
+
+   @category
+   @author Vagner Santana
+   @link http://github.com/vagnervjs/frame-video
+   @version:0.1
+   @since: 04/10/2013
+-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frame Player</title>
+</head>
+<body>
+    <div id="player1" data-vidsrc="videos/video01.json"></div>
+
+    <script src="src/js/frameplayer.js"></script>
+    <script>
+        var options1 = ({
+            'rate': 30,
+            'controls': true,
+            'autoplay': true,
+            'width': '400px',
+            'height': '260px',
+            // 'radius': '50%'
+        });
+
+        var player1 = new FramePlayer();
+        player1.load('player1', options1);
+        player1.play();
+    </script>
+</body>
+</html>
