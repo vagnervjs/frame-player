@@ -19,7 +19,8 @@ Create a player instead of playing video files, show a sequence of images at a c
 	<div id="my-player" data-vidsrc="videos/video.json"></div>
 ```
 - Set the options
-```html
+
+```javascript
 var options = ({
     'rate': 30,
     'controls': false,
@@ -29,17 +30,23 @@ var options = ({
     // 'radius': '50%'
 });
 ```
+
 - Init the player
-```html
+
+```javascript
 var player = new FramePlayer();
 player.load('my-player', options);
 player.play();
 ```
+
 - Using ffmpeg to generate the frames from a video file:
+
 ```bash
 ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
 ```
+
 - To convert all frames on a single JSON file, use the PHP file: to_data_uri.php
+
 ```bash
 php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
 ```
