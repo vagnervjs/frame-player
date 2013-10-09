@@ -19,7 +19,7 @@ Create a player instead of playing video files, show a sequence of images at a c
 	<div id="my-player" data-vidsrc="videos/video.json"></div>
 ```
 - Set the options
-```javascript
+```js
 var options = ({
     'rate': 30,
     'controls': false,
@@ -30,7 +30,7 @@ var options = ({
 });
 ```
 - Init the player
-```javascript
+```js
 var player = new FramePlayer();
 player.load('my-player', options);
 player.play();
