@@ -1,36 +1,93 @@
-<!--
-   index.html
-   A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
-
-   @category
-   @author Vagner Santana
-   @link http://github.com/vagnervjs/frame-video
-   @version:0.1
-   @since: 04/10/2013
--->
 <!doctype html>
-<html lang="en">
+<html lang='en'>
 <head>
     <meta charset="UTF-8">
-    <title>Frame Player</title>
+    <title>Frame Player - A player based on images frames for mobile devices</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+
+    <!-- Prism.js for highlight -->
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/prism.js"></script>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Frame Player"/>
+    <meta property="og:url" content="http://vagnervjs.github.io/frame-player"/>
+    <meta property="og:site_name" content="Frame Player"/>
+    <meta property="og:description" content="A video player without video files, just JSON. Based on 'images frames' thought to mobile devices!"/>
+    <meta property="og:image" content="http://f.cl.ly/items/200C1N3i1Q2G0H0o2936/frame-player.png"/>
+    <meta name="description" content="A video player without video files, just JSON. Based on 'images frames' thought to mobile devices!">
+    <meta name="author" content="Vagner Santana">
 </head>
 <body>
-    <div id="player1" data-vidsrc="videos/video01.json"></div>
+    <!-- Github Ribbon -->
+    <a href="https://github.com/vagnervjs/frame-player"><img class="ribbon" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
-    <script src="src/js/frameplayer.js"></script>
+    <!-- Sections -->
+    <section class="player">
+        <h1><span class="small">&#9658;</span> Frame Player</h1>
+        <div id="player2" data-vidsrc="videos/video02.json"></div>
+        <p>A video player without video files, just <strong>JSON</strong>. Based on "images frames" thought to mobile devices!</p>
+    </section>
+    <section class="customizable">
+        <h2>Customizable</h2>
+        <div id="player1" class="players" data-vidsrc="videos/video01.json"></div>
+    </section>
+    <section class="usage">
+        <h2>Usage</h2>
+        <p>Very Simple! Just put the script frameplayer.js on your HTML, and use:</p><br>
+        <code>&lt;div id="my-player" data-vidsrc="videos/video.json">&lt;/div></code>
+        <pre class="language-javascript">
+            <code class="language-javascript">
+                var options = ({
+                    'rate': 30,
+                    'controls': false,
+                    'autoplay': true,
+                    'width': '640px',
+                    'height': '390px',
+                    // 'radius': '50%'
+                });
+
+                var player = new FramePlayer();
+                player.load('my-player', options);
+                player.play();
+            </code>
+        </pre>
+        <p>Using ffmpeg to generate the frames from a video file:</p>
+        <code>$ ffmpeg -i video.mp4 -an -f image2 "%d.jpg"</code><br><br>
+        <p>To convert all frames on a single JSON file, use the PHP file: to_data_uri.php</p>
+        <code>$ php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json</code>
+    </section>
+    <footer>
+        <p>Made by <a href="http://vagnersantana.com" target="_blank">Vagner Santana</a></p>
+        <p>Fork on <a href="https://github.com/vagnervjs/frame-player" target="_blank">Github</a></p>
+    </footer>
+
+    <script src="js/frameplayer.js"></script>
     <script>
         var options1 = ({
             'rate': 30,
-            'controls': true,
+            'controls': false,
             'autoplay': true,
             'width': '400px',
             'height': '260px',
-            // 'radius': '50%'
+            'radius': '40% 0'
+        });
+        var options2 = ({
+            'rate': 30,
+            'controls': true,
+            'autoplay': true,
+            'width': '640px',
+            'height': '390px',
         });
 
         var player1 = new FramePlayer();
         player1.load('player1', options1);
         player1.play();
+
+        var player2 = new FramePlayer();
+        player2.load('player2', options2);
+        player2.play();
     </script>
 </body>
 </html>

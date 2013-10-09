@@ -1,15 +1,4 @@
-/*
-   frameplayer.js
-   A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
-
-   @category
-   @author Vagner Santana
-   @link http://github.com/vagnervjs/frame-video
-   @version:0.1
-   @since: 04/10/2013
- */
-
- var FramePlayer = function(){
+var FramePlayer = function(){
         this.divCont = null,
         this.elem = null,
         this.jsonVideoSrc = null,
