@@ -45,14 +45,24 @@ var player = new FramePlayer();
 player.load('my-player', options);
 player.play();
 ```
+#Generating the JSON Video File
 
-- Using ffmpeg to generate the frames from a video file:
+- Use ffmpeg to generate the frames from a video file:
 
 ```bash
 ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
 ```
 
-- To convert all frames on a single JSON file, use the PHP file: to_data_uri.php
+- Convert all frames on a single JSON file
+
+	- Option 1: Node.js
+
+```bash
+cd converter
+node app.js frameStart frameEnd folder/to/imgs/ json/video.json
+```
+
+	- Option 2: PHP
 
 ```bash
 php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
