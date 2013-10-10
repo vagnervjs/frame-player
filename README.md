@@ -57,17 +57,16 @@ ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
 
 	- Option 1: Node.js
 
-```bash
-cd converter
-node app.js frameStart frameEnd folder/to/imgs/ json/video.json
-```
-
+		```bash
+		cd converter
+		node app.js frameStart frameEnd folder/to/imgs/ json/video.json
+		```
+		
 	- Option 2: PHP
 
-```bash
-php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
-```
-
+		```bash	
+		php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
+		```
 
 ### Author
 
