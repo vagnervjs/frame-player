@@ -36,9 +36,15 @@
     </section>
     <section class="usage">
         <h2>Usage</h2>
-        <p>Very Simple! Just put the script frameplayer.js on your HTML, and use:</p><br>
-        <code>&lt;div id="my-player" data-vidsrc="videos/video.json">&lt;/div></code>
-        <pre class="language-javascript">
+        <p>Very Simple! Just load the script frameplayer.js and this simple markup on your HTML, and use:</p>
+        <div class="code">
+            <pre class="language-markup">
+            <code class="language-markup">
+                &lt;div id="my-player" data-vidsrc="video.json">&lt;/div>
+                &lt;script src="js/frameplayer.js">&lt;/script>
+            </code>
+            </pre>
+            <pre class="language-javascript">
             <code class="language-javascript">
                 var options = ({
                     'rate': 30,
@@ -53,11 +59,32 @@
                 player.load('my-player', options);
                 player.play();
             </code>
-        </pre>
-        <p>Using ffmpeg to generate the frames from a video file:</p>
-        <code>$ ffmpeg -i video.mp4 -an -f image2 "%d.jpg"</code><br><br>
-        <p>To convert all frames on a single JSON file, use the PHP file: to_data_uri.php</p>
-        <code>$ php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json</code>
+            </pre>
+        </div>
+    </section>
+    <section class="converting">
+        <h2>Converting</h2>
+        <p>First, use ffmpeg to generate the frames from a video file:</p>
+        <div class="code">
+            <pre class="language-bash">
+                <code class="language-bash">
+                    $ ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
+                </code>
+            </pre>
+        </div>
+        <p>Convert all frames on a single JSON file:</p>
+        <div class="code">
+            <pre class="language-bash">
+                <code class="language-bash">
+                    # Option 1: Node.js
+                    $ cd converter
+                    $ node app.js frameStart frameEnd folder/to/imgs/ json/video.json
+
+                    # Option 2: PHP
+                    $ php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
+                </code>
+            </pre>
+        </div>
     </section>
     <footer>
         <p>Made by <a href="http://vagnersantana.com" target="_blank">Vagner Santana</a></p>

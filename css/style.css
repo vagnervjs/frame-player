@@ -42,16 +42,22 @@ section, footer{
             margin: 20px auto;
         }
     .usage{
-        background-color: #2c3e50;
-        height: 660px;
+        background-color: #2980b9;
+        height: 620px;
+    }
+    .converting{
+        background-color: #f39c12;
+        height: 550px;
     }
 footer{
-    background-color: #f39c12;
+    background-color: #2c3e50;
     height: 80px;
 }
-
+.code{
+    width: 700px;
+    margin: 0 auto;
+}
 pre{
-    width: 500px;
     margin: 20px auto !important;
 }
 
@@ -74,14 +80,14 @@ p{
 #player2 { margin: 50px auto; }
 
 @media screen and (min-width:320px) {
-    .usage{ height: 710px; }
-    pre{ width: 350px; }
+    .usage{ height: 660px; }
+    .code{ width: 320px; }
 }
 @media screen and (min-width:480px) {
-    .usage{ height: 670px; }
-    pre{ width: 400px; }
+    .usage{ height: 640px; }
+    .code{ width: 480px; }
 }
-@media screen and (min-width:600px) {
-    .usage{ height: 650px; }
-    pre{ width: 500px; }
+@media screen and (min-width:700px) {
+    .usage{ height: 620px; }
+    .code{ width: 700px; }
 }
