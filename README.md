@@ -13,11 +13,18 @@ Create a player instead of playing video files, show a sequence of images at a c
 
 #Usage
 
-- Put the script on your HTML
+- Insert this HTML code on any part of your page and set the data-src attribute for your JSON video file
 
 ```html
 	<div id="my-player" data-vidsrc="videos/video.json"></div>
 ```
+
+- Put the script on your page
+
+```html
+	<script src="src/js/frameplayer.js"></script>
+```
+
 - Set the options
 
 ```javascript
