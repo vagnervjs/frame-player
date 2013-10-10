@@ -73,6 +73,15 @@ p{
 
 #player2 { margin: 50px auto; }
 
-@media screen and (min-width:320px) { .usage{ height: 710px; } }
-@media screen and (min-width:480px) { .usage{ height: 670px; } }
-@media screen and (min-width:600px) { .usage{ height: 650px; } }
+@media screen and (min-width:320px) {
+    .usage{ height: 710px; }
+    pre{ width: 350px; }
+}
+@media screen and (min-width:480px) {
+    .usage{ height: 670px; }
+    pre{ width: 400px; }
+}
+@media screen and (min-width:600px) {
+    .usage{ height: 650px; }
+    pre{ width: 500px; }
+}
