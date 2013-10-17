@@ -45,6 +45,13 @@ var player = new FramePlayer();
 player.load('my-player', options);
 player.play();
 ```
+
+- You also can use **bower** to install frame-player
+
+```bash
+bower install frame-player
+```
+
 #Generating the JSON Video File
 
 - Use ffmpeg to generate the frames from a video file:
