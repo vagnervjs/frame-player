@@ -12,7 +12,7 @@
  var FramePlayer = function(){
         this.divCont = null,
         this.elem = null,
-        this.jsonVideoSrc = null,
+        this.videoSrc = null,
         this.rate = 20,
         this.controls = true,
         this.paused = false,
@@ -24,7 +24,7 @@
 FramePlayer.prototype.load = function(el, options) {
     this.divCont = document.querySelector('#' + el);
     this.elem = el;
-    this.jsonVideoSrc = this.divCont.getAttribute('data-vidsrc');
+    this.videoSrc = this.divCont.getAttribute('data-vidsrc');
 
     var head = document.querySelector('head'),
         style = document.createElement('style');
@@ -55,7 +55,7 @@ FramePlayer.prototype.load = function(el, options) {
 FramePlayer.prototype.createControlsBar = function() {
     var player = this,
     controlsBar = document.createElement('div');
-    controlsBar.setAttribute('id', 'ctrl');
+    controlsBar.setAttribute('id', 'ctrl-'  + player.elem);
     controlsBar.style.position = 'absolute';
     controlsBar.style.bottom = '0';
     controlsBar.style.left = '0';
@@ -129,7 +129,7 @@ FramePlayer.prototype.createControlsBar = function() {
 };
 
 FramePlayer.prototype.play = function() {
-    this.getFile2(this.jsonVideoSrc, function(jsonVideoFile, player){
+    this.getFrames(this.videoSrc, function(frames, player){
         var img = null,
             lastImg = null,
             i = 0,
@@ -144,26 +144,21 @@ FramePlayer.prototype.play = function() {
         setInterval(function() {
             if(!player.paused){
                 i++;
-                // if (i >= jsonVideoFile.frames.length) {
-                //     i = 0;
-                // }
 
-                if (i >= jsonVideoFile.length) {
+                if (i >= frames.length) {
                     i = 1;
                 }
 
-                img = document.createElement('img');
+                img = frames[i];
                 img.setAttribute('class', 'frames-' + player.elem);
-                // img.src = '../videos/video01/' + i + '.jpg';
-                img = jsonVideoFile[i];
-                    img.style.width = player.width;
-                    img.style.height = player.height;
-                    if (lastImg) {
-                        container.replaceChild(img, lastImg);
-                    } else {
-                        container.appendChild(img);
-                    }
-                    lastImg = img;
+                img.style.width = player.width;
+                img.style.height = player.height;
+                if (lastImg) {
+                    container.replaceChild(img, lastImg);
+                } else {
+                    container.appendChild(img);
+                }
+                lastImg = img;
             }
         }, Math.round(1000 / player.rate));
     });
@@ -252,23 +247,32 @@ FramePlayer.prototype.getFile = function(src, callback){
     }
 };
 
-FramePlayer.prototype.getFile2 = function(src, callback){
+FramePlayer.prototype.getFrames = function(src, callback){
     var frames = [],
         player = this,
         percentageLoaded = 0,
         i = 1,
         j = 1,
-        call = true;
+        call = true,
+        controlBar = document.querySelector('#ctrl-'  + player.elem);
 
     while(i <= 3000){
         var imgObj = new Image(),
-            url = '../../videos/video01/' + i + '.jpg';
+            url = document.URL + src + i + '.jpg';
 
         imgObj.src = url;
         frames[i] = imgObj;
 
         i++;
     }
+
+    var p = document.createElement('p');
+        p.innerHTML = 'Loading...';
+        p.style.float = 'right';
+        p.style.fontSize = '14px';
+        p.style.marginRight = '10px';
+        p.style.color = '#dedede';
+        controlBar.appendChild(p);
 
     frames.forEach(function(imgElem){
         imgElem.addEventListener('load', function() {
@@ -278,8 +282,11 @@ FramePlayer.prototype.getFile2 = function(src, callback){
                 callback(frames, player);
                 call = false;
             }
-
-            console.log(percentageLoaded + ' - ' + call);
+            if (percentageLoaded != 100) {
+                p.innerHTML = 'Loading... ' + percentageLoaded + '%';
+            } else{
+                controlBar.removeChild(p);
+            }
         }, false);
     });
 };
