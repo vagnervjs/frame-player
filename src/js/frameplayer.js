@@ -129,10 +129,10 @@ FramePlayer.prototype.createControlsBar = function() {
 };
 
 FramePlayer.prototype.play = function() {
-    this.getFile(this.jsonVideoSrc, function(jsonVideoFile, player){
+    this.getFile2(this.jsonVideoSrc, function(jsonVideoFile, player){
         var img = null,
             lastImg = null,
-            i = -1,
+            i = 0,
             container = document.createElement('div');
 
         container.style.width = player.width;
@@ -144,23 +144,26 @@ FramePlayer.prototype.play = function() {
         setInterval(function() {
             if(!player.paused){
                 i++;
-                if (i >= jsonVideoFile.frames.length) {
-                    i = 0;
+                // if (i >= jsonVideoFile.frames.length) {
+                //     i = 0;
+                // }
+
+                if (i >= jsonVideoFile.length) {
+                    i = 1;
                 }
 
                 img = document.createElement('img');
                 img.setAttribute('class', 'frames-' + player.elem);
-                img.src = jsonVideoFile.frames[i];
-                img.onload = function() {
-                    this.style.width = player.width;
-                    this.style.height = player.height;
+                // img.src = '../videos/video01/' + i + '.jpg';
+                img = jsonVideoFile[i];
+                    img.style.width = player.width;
+                    img.style.height = player.height;
                     if (lastImg) {
-                        container.replaceChild(this, lastImg);
+                        container.replaceChild(img, lastImg);
                     } else {
-                        container.appendChild(this);
+                        container.appendChild(img);
                     }
-                    lastImg = this;
-                };
+                    lastImg = img;
             }
         }, Math.round(1000 / player.rate));
     });
@@ -247,4 +250,36 @@ FramePlayer.prototype.getFile = function(src, callback){
     } else {
         console.log('Error loading file.');
     }
+};
+
+FramePlayer.prototype.getFile2 = function(src, callback){
+    var frames = [],
+        player = this,
+        percentageLoaded = 0,
+        i = 1,
+        j = 1,
+        call = true;
+
+    while(i <= 3000){
+        var imgObj = new Image(),
+            url = '../../videos/video01/' + i + '.jpg';
+
+        imgObj.src = url;
+        frames[i] = imgObj;
+
+        i++;
+    }
+
+    frames.forEach(function(imgElem){
+        imgElem.addEventListener('load', function() {
+            j++;
+            percentageLoaded = (j*100/frames.length).toFixed(2);
+            if(percentageLoaded > 50 && call){
+                callback(frames, player);
+                call = false;
+            }
+
+            console.log(percentageLoaded + ' - ' + call);
+        }, false);
+    });
 };
