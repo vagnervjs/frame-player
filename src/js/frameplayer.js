@@ -13,6 +13,7 @@
         this.divCont = null,
         this.elem = null,
         this.videoSrc = null,
+        this.frames = 0,
         this.rate = 20,
         this.controls = true,
         this.paused = false,
@@ -32,6 +33,7 @@ FramePlayer.prototype.load = function(el, options) {
         head.appendChild(style);
 
     // Options
+    if (options.frames !== undefined){ this.frames = options.frames; }
     if (options.rate !== undefined){ this.rate = options.rate; }
     if (options.controls !== undefined){ this.controls = options.controls;}
     if (options.autoplay !== undefined){ if (!options.autoplay) { this.paused = true; } }
@@ -256,18 +258,16 @@ FramePlayer.prototype.getFrames = function(src, callback){
         call = true,
         controlBar = document.querySelector('#ctrl-'  + player.elem);
 
-    while(i <= 3000){
+    while(i <= player.frames){
         var imgObj = new Image(),
             url = document.URL + src + i + '.jpg';
 
         imgObj.src = url;
         frames[i] = imgObj;
-
         i++;
     }
 
     var p = document.createElement('p');
-        p.innerHTML = 'Loading...';
         p.style.float = 'right';
         p.style.fontSize = '14px';
         p.style.marginRight = '10px';
