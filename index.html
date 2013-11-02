@@ -13,9 +13,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Frame Player</title>
+    <link rel="stylesheet" href="src/css/frameplayer.css">
 </head>
 <body>
-    <div id="player1" data-vidsrc="videos/video01.json"></div>
+    <div id="player1" class="frameplayer" data-vidsrc="videos/video01.json"></div>
 
     <script src="src/js/frameplayer.js"></script>
     <script>
@@ -28,8 +29,7 @@
             // 'radius': '50%'
         });
 
-        var player1 = new FramePlayer();
-        player1.load('player1', options1);
+        var player1 = new FramePlayer('player1', options1);
         player1.play();
     </script>
 </body>

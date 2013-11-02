@@ -9,70 +9,44 @@
    @since: 04/10/2013
  */
 
- var FramePlayer = function(){
-        this.divCont = null,
-        this.elem = null,
-        this.jsonVideoSrc = null,
-        this.rate = 20,
-        this.controls = true,
-        this.paused = false,
-        this.width = '480px',
-        this.height = '320px';
-        this.radius = null;
-};
-
-FramePlayer.prototype.load = function(el, options) {
-    this.divCont = document.querySelector('#' + el);
+var FramePlayer = function(el, options){
+    this.divCont = document.getElementById(el);
     this.elem = el;
     this.jsonVideoSrc = this.divCont.getAttribute('data-vidsrc');
-
-    var head = document.querySelector('head'),
-        style = document.createElement('style');
-        style.setAttribute('id', 'style-' + this.elem);
-        head.appendChild(style);
+    this.rate = 20,
+    this.controls = true,
+    this.paused = false,
+    this.width = '480px',
+    this.height = '320px';
+    this.radius = null;
 
     // Options
-    if (options.rate !== undefined){ this.rate = options.rate; }
-    if (options.controls !== undefined){ this.controls = options.controls;}
-    if (options.autoplay !== undefined){ if (!options.autoplay) { this.paused = true; } }
-    if (options.width !== undefined){ this.width = options.width; }
-    if (options.height !== undefined){ this.height = options.height; }
-    if (options.radius !== undefined){
-        var currentStyle = document.querySelector('#style-' + this.elem);
+    if ('rate' in options){ this.rate = options.rate; }
+    if ('controls' in options){ this.controls = options.controls;}
+    if ('autoplay' in options){ if (!options.autoplay) { this.paused = true; } }
+    if ('width' in options){ this.width = options.width; }
+    if ('height' in options){ this.height = options.height; }
+    if ('radius' in options){
+        var currentStyle = document.getElementById('style-' + this.elem);
         currentStyle.innerHTML = '#' + this.elem + ', .frames-' + this.elem + '{ border-radius: ' + options.radius + '; overflow: hidden;}';
     }
 
-    this.divCont.style.background = '#3b3b3b';
     this.divCont.style.width = this.width;
     this.divCont.style.height = this.height;
-    this.divCont.style.position = 'relative';
 
-    if(this.controls){
-        this.createControlsBar();
-    }
+    if(this.controls){ this.createControlsBar(); }
 };
 
 FramePlayer.prototype.createControlsBar = function() {
     var player = this,
     controlsBar = document.createElement('div');
-    controlsBar.setAttribute('id', 'ctrl');
-    controlsBar.style.position = 'absolute';
-    controlsBar.style.bottom = '0';
-    controlsBar.style.left = '0';
-    controlsBar.style.margin = '0';
-    controlsBar.style.zIndex = '1';
-    controlsBar.style.opacity = '.6';
+    controlsBar.setAttribute('class', 'fp-ctrl');
     controlsBar.style.width = this.width;
-    controlsBar.style.height = '40px';
-    controlsBar.style.background = '#000000';
 
     // Buttons
     var btnPause = document.createElement('button');
     btnPause.setAttribute('id', 'pause-' + player.elem);
-    btnPause.style.marginTop = '10px';
-    btnPause.style.marginLeft = '10px';
-    btnPause.style.marginRight = '10px';
-    btnPause.style.float = 'left';
+    btnPause.setAttribute('class', 'fp-btn');
     btnPause.innerHTML = 'Pause';
     btnPause.addEventListener('click', function(){
             player.pause();
@@ -82,10 +56,7 @@ FramePlayer.prototype.createControlsBar = function() {
 
     var btnPlay = document.createElement('button');
     btnPlay.setAttribute('id', 'play-' + player.elem);
-    btnPlay.style.marginTop = '10px';
-    btnPlay.style.marginLeft = '10px';
-    btnPlay.style.marginRight = '10px';
-    btnPlay.style.float = 'left';
+    btnPlay.setAttribute('class', 'fp-btn');
     btnPlay.innerHTML = 'Play';
     btnPlay.addEventListener('click', function(){
             player.resume();
@@ -100,8 +71,7 @@ FramePlayer.prototype.createControlsBar = function() {
         option4 = document.createElement('option');
 
     selectFilter.setAttribute('id', 'filter-' + player.elem);
-    selectFilter.style.marginTop = '10px';
-    selectFilter.style.float = 'left';
+    selectFilter.setAttribute('class', 'fp-select');
     option1.setAttribute('value', 'normal');
     option2.setAttribute('value', 'grayscale');
     option3.setAttribute('value', 'sepia');
@@ -120,25 +90,20 @@ FramePlayer.prototype.createControlsBar = function() {
     );
     controlsBar.appendChild(selectFilter);
 
-    if(player.paused){
-        btnPause.style.display = 'none';
-    } else{
-        btnPlay.style.display = 'none';
-    }
+    player.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
     this.divCont.appendChild(controlsBar);
 };
 
 FramePlayer.prototype.play = function() {
     this.getFile(this.jsonVideoSrc, function(jsonVideoFile, player){
-        var img = null,
+        var img = document.createElement('img'),
             lastImg = null,
             i = -1,
             container = document.createElement('div');
 
+        container.setAttribute('class', 'fp-container');
         container.style.width = player.width;
         container.style.height = player.height;
-        container.style.margin = '0';
-        container.style.position = 'absolute';
         player.divCont.appendChild(container);
 
         setInterval(function() {
@@ -148,17 +113,11 @@ FramePlayer.prototype.play = function() {
                     i = 0;
                 }
 
-                img = document.createElement('img');
-                img.setAttribute('class', 'frames-' + player.elem);
                 img.src = jsonVideoFile.frames[i];
                 img.onload = function() {
                     this.style.width = player.width;
                     this.style.height = player.height;
-                    if (lastImg) {
-                        container.replaceChild(this, lastImg);
-                    } else {
-                        container.appendChild(this);
-                    }
+                    lastImg ? container.replaceChild(this, lastImg) : container.appendChild(this);
                     lastImg = this;
                 };
             }
@@ -167,8 +126,8 @@ FramePlayer.prototype.play = function() {
 };
 
 FramePlayer.prototype.resume = function() {
-    var btnPlay = document.querySelector('#play-' + this.elem),
-        btnPause = document.querySelector('#pause-' + this.elem);
+    var btnPlay = document.getElementById('play-' + this.elem),
+        btnPause = document.getElementById('pause-' + this.elem);
 
     btnPlay.style.display = 'none';
     btnPause.style.display = 'block';
@@ -176,8 +135,8 @@ FramePlayer.prototype.resume = function() {
 };
 
 FramePlayer.prototype.pause = function() {
-    var btnPlay = document.querySelector('#play-' + this.elem),
-        btnPause = document.querySelector('#pause-' + this.elem);
+    var btnPlay = document.getElementById('play-' + this.elem),
+        btnPause = document.getElementById('pause-' + this.elem);
 
     btnPlay.style.display = 'block';
     btnPause.style.display = 'none';
@@ -185,21 +144,20 @@ FramePlayer.prototype.pause = function() {
 };
 
 FramePlayer.prototype.setFilter = function(filter) {
-    var currentStyle = document.querySelector('#style-' + this.elem);
-    currentStyle.innerHTML = null;
+    var images = document.querySelector('#' + this.elem + ' > .fp-container > img');
 
     switch (filter) {
       case 'normal':
-        currentStyle.innerHTML = '.frames-' + this.elem + '{ }';
+        images.setAttribute('class', '');
         break;
       case 'grayscale':
-        currentStyle.innerHTML = '.frames-' + this.elem + '{ -webkit-filter: grayscale(100%); }';
+        images.setAttribute('class', 'fp-grayscale');
         break;
       case 'sepia':
-        currentStyle.innerHTML = '.frames-' + this.elem + '{ -webkit-filter: sepia(100%); }';
+        images.setAttribute('class', 'fp-sepia');
         break;
       case 'invert':
-        currentStyle.innerHTML = '.frames-' + this.elem + '{ -webkit-filter: invert(100%); }';
+        images.setAttribute('class', 'fp-invert');
         break;
       default:
         break;
@@ -207,25 +165,18 @@ FramePlayer.prototype.setFilter = function(filter) {
 };
 
 FramePlayer.prototype.getFile = function(src, callback){
-    var _HTTP = null,
-        player = this;
+    var _HTTP = new XMLHttpRequest(),
+        player = this,
+        p = document.createElement('p');
 
-    if (window.XMLHttpRequest) {
-        _HTTP = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        _HTTP = new ActiveXObject('Microsoft.XMLHTTP');
-    }
     if (_HTTP) {
         _HTTP.open('GET', src, true);
         _HTTP.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         _HTTP.send(null);
-        var p = document.createElement('p');
 
         _HTTP.onprogress = function() {
             p.innerHTML = 'Loading...';
-            p.style.textAlign = 'center';
-            p.style.lineHeight = '20';
-            p.style.fontSize = '18px';
+            p.setAttribute('class', 'fp-loading');
             player.divCont.appendChild(p);
         };
 

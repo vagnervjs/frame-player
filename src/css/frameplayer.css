@@ -1,0 +1,57 @@
+/*
+   frameplayer.css
+   A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
+
+   @category
+   @author Vagner Santana
+   @link http://github.com/vagnervjs/frame-video
+   @version:0.1
+   @since: 04/10/2013
+ */
+
+/* Player */
+ .frameplayer{
+    background: #3b3b3b;
+    position: relative;
+}
+
+.frameplayer .fp-container{
+    margin: 0;
+    position: absolute;
+}
+
+/* Control Bar*/
+.frameplayer > .fp-ctrl{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    z-index: 1;
+    opacity: .6;
+    height: 40px;
+    background: #000000;
+}
+
+/* Buttons */
+.fp-ctrl > .fp-btn{
+    margin: 10px 10px 0 10px;
+    float: left;
+}
+
+.fp-ctrl > .fp-select{
+    margin-top: 10px;
+    float: left;
+}
+
+/* Loading Message */
+.frameplayer > .fp-loading{
+    text-align: center;
+    line-height: 15;
+    font-size: 16px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Filters */
+.fp-grayscale { -webkit-filter: grayscale(100%); }
+.fp-sepia { -webkit-filter: sepia(100%); }
+.fp-invert { -webkit-filter: invert(100%); }
