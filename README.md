@@ -16,12 +16,13 @@ Create a player instead of playing video files, show a sequence of images at a c
 - Insert this HTML code on any part of your page and set the data-src attribute for your JSON video file
 
 ```html
-	<div id="my-player" data-vidsrc="videos/video.json"></div>
+	<div id="my-player" class="frameplayer" data-vidsrc="videos/video.json"></div>
 ```
 
-- Put the script on your page
+- Put the script and the style on your page
 
 ```html
+	<link rel="stylesheet" href="src/css/frameplayer.css">
 	<script src="src/js/frameplayer.js"></script>
 ```
 
@@ -41,9 +42,8 @@ var options = ({
 - Init the player
 
 ```javascript
-var player = new FramePlayer();
-player.load('my-player', options);
-player.play();
+var player = new FramePlayer('my-player', options);
+	player.play();
 ```
 
 - You also can use **bower** to install frame-player
