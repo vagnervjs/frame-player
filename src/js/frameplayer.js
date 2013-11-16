@@ -102,9 +102,12 @@ FramePlayer.prototype.play = function() {
             i = -1,
             container = document.createElement('div');
 
+        img.style.width = player.width;
+        img.style.height = player.height;
         container.setAttribute('class', 'fp-container');
         container.style.width = player.width;
         container.style.height = player.height;
+        container.appendChild(img);
         player.divCont.appendChild(container);
 
         setInterval(function() {
@@ -113,13 +116,7 @@ FramePlayer.prototype.play = function() {
                 if (i >= jsonVideoFile.frames.length) {
                     i = 0;
                 }
-
                 img.src = jsonVideoFile.frames[i];
-                img.onload = function() {
-                    this.style.width = player.width;
-                    this.style.height = player.height;
-                    container.appendChild(this);
-                };
             }
         }, Math.round(1000 / player.rate));
     });
