@@ -27,8 +27,10 @@ var FramePlayer = function(el, options){
     if ('width' in options){ this.width = options.width; }
     if ('height' in options){ this.height = options.height; }
     if ('radius' in options){
-        var currentStyle = document.getElementById('style-' + this.elem);
-        currentStyle.innerHTML = '#' + this.elem + ', .frames-' + this.elem + '{ border-radius: ' + options.radius + '; overflow: hidden;}';
+        var currentStyle = document.createElement('style');
+            currentStyle.setAttribute('id', 'style-' + this.elem);
+            currentStyle.innerHTML = '#' + this.elem + ', .frames-' + this.elem + '{ border-radius: ' + options.radius + '; overflow: hidden;}';
+            document.head.appendChild(currentStyle);
     }
 
     this.divCont.style.width = this.width;
@@ -97,7 +99,6 @@ FramePlayer.prototype.createControlsBar = function() {
 FramePlayer.prototype.play = function() {
     this.getFile(this.jsonVideoSrc, function(jsonVideoFile, player){
         var img = document.createElement('img'),
-            lastImg = null,
             i = -1,
             container = document.createElement('div');
 
@@ -117,8 +118,7 @@ FramePlayer.prototype.play = function() {
                 img.onload = function() {
                     this.style.width = player.width;
                     this.style.height = player.height;
-                    lastImg ? container.replaceChild(this, lastImg) : container.appendChild(this);
-                    lastImg = this;
+                    container.appendChild(this);
                 };
             }
         }, Math.round(1000 / player.rate));
