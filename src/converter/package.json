@@ -19,5 +19,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vagnervjs/frame-player/issues"
+  },
+  "devDependencies": {
+    "mime": "^1.2.11",
+    "path": "^0.4.9"
   }
 }
