@@ -1,6 +1,7 @@
 var fs = require('fs'),
     util = require('util'),
-    mime = require('mime');
+    mime = require('mime'),
+    path = require('path');
 
 function base64Img(src) {
     var data = fs.readFileSync(src).toString('base64');
