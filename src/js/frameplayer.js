@@ -37,6 +37,70 @@ var FramePlayer = function(el, options){
     this.divCont.style.height = this.height;
 
     if(this.controls){ this.createControlsBar(); }
+
+    // this.initialize();
+};
+
+FramePlayer.prototype.initialize = function() {
+    this.initializeRequestAnimationFrame();
+    // this.runCanvasRenderer();
+};
+
+FramePlayer.prototype.runCanvasRenderer = function() {
+    var player = this;
+    var processFrame = function() {
+        window.requestAnimationFrame(processFrame);
+    };
+
+    window.requestAnimationFrame(processFrame);
+};
+
+FramePlayer.prototype.render = function(jsonVideoFile, player) {
+    var now;
+    var then = Date.now();
+    var interval = 1000/player.rate;
+    var delta;
+
+    var img = document.createElement('img'),
+            i = -1,
+            container = document.createElement('div');
+
+        img.style.width = player.width;
+        img.style.height = player.height;
+        container.setAttribute('class', 'fp-container');
+        container.style.width = player.width;
+        container.style.height = player.height;
+        // container.appendChild(img);
+
+        player.canvas = document.createElement('canvas');
+        player.context = player.canvas.getContext('2d');
+        player.canvas.style.width = player.width;
+        player.canvas.style.height = player.height;
+        container.appendChild(player.canvas);
+        
+        player.divCont.appendChild(container);
+        
+        var processFrame = function() {
+            now = Date.now();
+            delta = now - then;
+
+            if (delta > interval) {
+                then = now - (delta % interval);
+
+                if(!player.paused){
+                    i++;
+                    if (i >= jsonVideoFile.frames.length) {
+                        i = 0;
+                    }
+                    img.src = jsonVideoFile.frames[i];
+                    player.context.drawImage(img, 0, 0, player.canvas.width, player.canvas.height);
+                }
+            }
+
+            window.requestAnimationFrame(processFrame);
+        };
+
+        window.requestAnimationFrame(processFrame);
 };
 
 FramePlayer.prototype.createControlsBar = function() {
@@ -97,29 +161,7 @@ FramePlayer.prototype.createControlsBar = function() {
 };
 
 FramePlayer.prototype.play = function() {
-    this.getFile(this.jsonVideoSrc, function(jsonVideoFile, player){
-        var img = document.createElement('img'),
-            i = -1,
-            container = document.createElement('div');
-
-        img.style.width = player.width;
-        img.style.height = player.height;
-        container.setAttribute('class', 'fp-container');
-        container.style.width = player.width;
-        container.style.height = player.height;
-        container.appendChild(img);
-        player.divCont.appendChild(container);
-
-        setInterval(function() {
-            if(!player.paused){
-                i++;
-                if (i >= jsonVideoFile.frames.length) {
-                    i = 0;
-                }
-                img.src = jsonVideoFile.frames[i];
-            }
-        }, Math.round(1000 / player.rate));
-    });
+    this.getFile(this.jsonVideoSrc, this.render);
 };
 
 FramePlayer.prototype.resume = function() {
@@ -195,4 +237,37 @@ FramePlayer.prototype.getFile = function(src, callback){
     } else {
         console.log('Error loading file.');
     }
+};
+
+// Polyfill
+FramePlayer.prototype.initializeRequestAnimationFrame = function() {
+    // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+    // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+     
+    // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+     
+    // MIT license
+
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
 };
