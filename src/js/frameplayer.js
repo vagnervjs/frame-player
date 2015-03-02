@@ -9,7 +9,7 @@
    @since: 04/10/2013
  */
 
-var FramePlayer = function(el, options){
+var FramePlayer = function(el, options) {
     this.divCont = document.getElementById(el);
     this.elem = el;
     this.jsonVideoSrc = this.divCont.getAttribute('data-vidsrc');
@@ -20,13 +20,17 @@ var FramePlayer = function(el, options){
     this.height = '320px';
     this.radius = null;
 
-    // Options
-    if ('rate' in options){ this.rate = options.rate; }
-    if ('controls' in options){ this.controls = options.controls;}
-    if ('autoplay' in options){ if (!options.autoplay) { this.paused = true; } }
-    if ('width' in options){ this.width = options.width; }
-    if ('height' in options){ this.height = options.height; }
-    if ('radius' in options){
+    this.setOptions(options);
+    this.initializeRequestAnimationFrame();
+};
+
+FramePlayer.prototype.setOptions = function(options) {
+    if ('rate' in options) { this.rate = options.rate; }
+    if ('controls' in options) { this.controls = options.controls;}
+    if ('autoplay' in options) { if (!options.autoplay) { this.paused = true; } }
+    if ('width' in options) { this.width = options.width; }
+    if ('height' in options) { this.height = options.height; }
+    if ('radius' in options) {
         var currentStyle = document.createElement('style');
             currentStyle.setAttribute('id', 'style-' + this.elem);
             currentStyle.innerHTML = '#' + this.elem + ', .frames-' + this.elem + '{ border-radius: ' + options.radius + '; overflow: hidden;}';
@@ -36,9 +40,9 @@ var FramePlayer = function(el, options){
     this.divCont.style.width = this.width;
     this.divCont.style.height = this.height;
 
-    if(this.controls){ this.createControlsBar(); }
-
-    this.initializeRequestAnimationFrame();
+    if(this.controls) {
+        this.createControlBar();
+    }
 };
 
 FramePlayer.prototype.render = function(jsonVideoFile, player) {
@@ -82,33 +86,38 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
     window.requestAnimationFrame(processFrame);
 };
 
-FramePlayer.prototype.createControlsBar = function() {
+FramePlayer.prototype.createControlBar = function() {
     var player = this,
-    controlsBar = document.createElement('div');
-    controlsBar.setAttribute('class', 'fp-ctrl');
-    controlsBar.style.width = this.width;
+    controlBar = document.createElement('div');
+    controlBar.setAttribute('class', 'fp-ctrl');
+    controlBar.style.width = this.width;
 
-    // Buttons
+    // Pause Button
     var btnPause = document.createElement('button');
     btnPause.setAttribute('id', 'pause-' + player.elem);
     btnPause.setAttribute('class', 'fp-btn');
     btnPause.innerHTML = 'Pause';
-    btnPause.addEventListener('click', function(){
+    btnPause.addEventListener('click', function() {
             player.pause();
         }, false
     );
-    controlsBar.appendChild(btnPause);
+    controlBar.appendChild(btnPause);
 
+    // Play Button
     var btnPlay = document.createElement('button');
     btnPlay.setAttribute('id', 'play-' + player.elem);
     btnPlay.setAttribute('class', 'fp-btn');
     btnPlay.innerHTML = 'Play';
-    btnPlay.addEventListener('click', function(){
+    btnPlay.addEventListener('click', function() {
             player.resume();
         }, false
     );
-    controlsBar.appendChild(btnPlay);
+    controlBar.appendChild(btnPlay);
 
+    // Display Play/Pause Button
+    player.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
+
+    // Filter Select
     var selectFilter = document.createElement('select'),
         option1 = document.createElement('option'),
         option2 = document.createElement('option'),
@@ -129,14 +138,14 @@ FramePlayer.prototype.createControlsBar = function() {
     selectFilter.appendChild(option2);
     selectFilter.appendChild(option3);
     selectFilter.appendChild(option4);
-    selectFilter.addEventListener('change', function(){
+    selectFilter.addEventListener('change', function() {
             player.setFilter(this.value);
         }, false
     );
-    controlsBar.appendChild(selectFilter);
+    controlBar.appendChild(selectFilter);
 
-    player.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
-    this.divCont.appendChild(controlsBar);
+    // Add control bar
+    this.divCont.appendChild(controlBar);
 };
 
 FramePlayer.prototype.play = function() {
@@ -182,7 +191,7 @@ FramePlayer.prototype.setFilter = function(filter) {
     }
 };
 
-FramePlayer.prototype.getFile = function(src, callback){
+FramePlayer.prototype.getFile = function(src, callback) {
     var _HTTP = new XMLHttpRequest(),
         player = this,
         p = document.createElement('p');
@@ -198,7 +207,7 @@ FramePlayer.prototype.getFile = function(src, callback){
             player.divCont.appendChild(p);
         };
 
-        if (typeof(_HTTP.onload) !== undefined){
+        if (typeof(_HTTP.onload) !== undefined) {
             _HTTP.onload = function() {
                 player.divCont.removeChild(p);
                 callback(JSON.parse(this.responseText), player);
