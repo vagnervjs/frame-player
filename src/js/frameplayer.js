@@ -62,9 +62,9 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
         player.canvas.style.width = player.width;
         player.canvas.style.height = player.height;
         container.appendChild(player.canvas);
-        
+
         player.divCont.appendChild(container);
-        
+
         var processFrame = function() {
             now = Date.now();
             delta = now - then;
@@ -168,20 +168,20 @@ FramePlayer.prototype.pause = function() {
 };
 
 FramePlayer.prototype.setFilter = function(filter) {
-    var images = document.querySelector('#' + this.elem + ' > .fp-container > img');
+    var canvas = document.querySelector('#' + this.elem + ' canvas');
 
     switch (filter) {
       case 'normal':
-        images.setAttribute('class', '');
+        canvas.setAttribute('class', '');
         break;
       case 'grayscale':
-        images.setAttribute('class', 'fp-grayscale');
+        canvas.setAttribute('class', 'fp-grayscale');
         break;
       case 'sepia':
-        images.setAttribute('class', 'fp-sepia');
+        canvas.setAttribute('class', 'fp-sepia');
         break;
       case 'invert':
-        images.setAttribute('class', 'fp-invert');
+        canvas.setAttribute('class', 'fp-invert');
         break;
       default:
         break;
@@ -235,20 +235,20 @@ FramePlayer.prototype.initializeRequestAnimationFrame = function() {
     var vendors = ['ms', 'moz', 'webkit', 'o'];
     for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
         window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
                                    || window[vendors[x]+'CancelRequestAnimationFrame'];
     }
- 
+
     if (!window.requestAnimationFrame)
         window.requestAnimationFrame = function(callback, element) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
               timeToCall);
             lastTime = currTime + timeToCall;
             return id;
         };
- 
+
     if (!window.cancelAnimationFrame)
         window.cancelAnimationFrame = function(id) {
             clearTimeout(id);
