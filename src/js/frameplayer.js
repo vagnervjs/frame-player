@@ -42,50 +42,44 @@ var FramePlayer = function(el, options){
 };
 
 FramePlayer.prototype.render = function(jsonVideoFile, player) {
-    var now;
-    var then = Date.now();
-    var interval = 1000/player.rate;
-    var delta;
+    var now,
+        then = Date.now(),
+        interval = 1000/player.rate,
+        delta,
+        i = -1;
 
     var img = document.createElement('img'),
-            i = -1,
-            container = document.createElement('div');
+        container = document.createElement('div');
 
-        img.style.width = player.width;
-        img.style.height = player.height;
-        container.setAttribute('class', 'fp-container');
-        container.style.width = player.width;
-        container.style.height = player.height;
+    container.setAttribute('class', 'fp-container');
 
-        player.canvas = document.createElement('canvas');
-        player.context = player.canvas.getContext('2d');
-        player.canvas.style.width = player.width;
-        player.canvas.style.height = player.height;
-        container.appendChild(player.canvas);
+    player.canvas = document.createElement('canvas');
+    player.context = player.canvas.getContext('2d');
 
-        player.divCont.appendChild(container);
+    container.appendChild(player.canvas);
+    player.divCont.appendChild(container);
 
-        var processFrame = function() {
-            now = Date.now();
-            delta = now - then;
+    var processFrame = function() {
+        now = Date.now();
+        delta = now - then;
 
-            if (delta > interval) {
-                then = now - (delta % interval);
+        if (delta > interval) {
+            then = now - (delta % interval);
 
-                if(!player.paused){
-                    i++;
-                    if (i >= jsonVideoFile.frames.length) {
-                        i = 0;
-                    }
-                    img.src = jsonVideoFile.frames[i];
-                    player.context.drawImage(img, 0, 0, player.canvas.width, player.canvas.height);
+            if(!player.paused) {
+                i++;
+                if (i >= jsonVideoFile.frames.length) {
+                    i = 0;
                 }
+                img.src = jsonVideoFile.frames[i];
+                player.context.drawImage(img, 0, 0, player.canvas.width, player.canvas.height);
             }
-
-            window.requestAnimationFrame(processFrame);
-        };
+        }
 
         window.requestAnimationFrame(processFrame);
+    };
+
+    window.requestAnimationFrame(processFrame);
 };
 
 FramePlayer.prototype.createControlsBar = function() {
