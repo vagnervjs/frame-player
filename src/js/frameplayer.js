@@ -81,35 +81,35 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
 };
 
 FramePlayer.prototype.createControlBar = function() {
-    var player = this,
+    var _self = this,
     controlBar = document.createElement('div');
     controlBar.setAttribute('class', 'fp-ctrl');
     controlBar.style.width = this.width;
 
     // Pause Button
     var btnPause = document.createElement('button');
-    btnPause.setAttribute('id', 'pause-' + player.elem);
+    btnPause.setAttribute('id', 'pause-' + _self.elem);
     btnPause.setAttribute('class', 'fp-btn');
     btnPause.innerHTML = 'Pause';
     btnPause.addEventListener('click', function() {
-            player.pause();
+            _self.pause();
         }, false
     );
     controlBar.appendChild(btnPause);
 
     // Play Button
     var btnPlay = document.createElement('button');
-    btnPlay.setAttribute('id', 'play-' + player.elem);
+    btnPlay.setAttribute('id', 'play-' + _self.elem);
     btnPlay.setAttribute('class', 'fp-btn');
     btnPlay.innerHTML = 'Play';
     btnPlay.addEventListener('click', function() {
-            player.resume();
+            _self.resume();
         }, false
     );
     controlBar.appendChild(btnPlay);
 
     // Display Play/Pause Button
-    player.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
+    _self.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
 
     // Filter Select
     var selectFilter = document.createElement('select'),
@@ -123,10 +123,10 @@ FramePlayer.prototype.createControlBar = function() {
         selectFilter.appendChild($option);
     }
 
-    selectFilter.setAttribute('id', 'filter-' + player.elem);
+    selectFilter.setAttribute('id', 'filter-' + _self.elem);
     selectFilter.setAttribute('class', 'fp-select');
     selectFilter.addEventListener('change', function() {
-            player.setFilter(this.value);
+            _self.setFilter(this.value);
         }, false
     );
     controlBar.appendChild(selectFilter);
@@ -180,7 +180,7 @@ FramePlayer.prototype.setFilter = function(filter) {
 
 FramePlayer.prototype.getFile = function(src, callback) {
     var _HTTP = new XMLHttpRequest(),
-        player = this,
+        _self = this,
         p = document.createElement('p');
 
     if (_HTTP) {
@@ -191,20 +191,20 @@ FramePlayer.prototype.getFile = function(src, callback) {
         _HTTP.onprogress = function() {
             p.innerHTML = 'Loading...';
             p.setAttribute('class', 'fp-loading');
-            player.divCont.appendChild(p);
+            _self.divCont.appendChild(p);
         };
 
         if (typeof(_HTTP.onload) !== undefined) {
             _HTTP.onload = function() {
-                player.divCont.removeChild(p);
-                callback(JSON.parse(this.responseText), player);
+                _self.divCont.removeChild(p);
+                callback(JSON.parse(this.responseText), _self);
                 _HTTP = null;
             };
         } else {
             _HTTP.onreadystatechange = function() {
                 if (_HTTP.readyState === 4) {
-                    player.divCont.removeChild(p);
-                    callback(JSON.parse(this.responseText), player);
+                    _self.divCont.removeChild(p);
+                    callback(JSON.parse(this.responseText), _self);
                     _HTTP = null;
                 }
             };
