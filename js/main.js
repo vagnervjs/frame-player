@@ -2,7 +2,7 @@ var options1 = ({
     'rate': 30,
     'controls': false,
     'autoplay': true,
-    'width': '400px',
+    'width': '100%',
     'height': '260px',
     'radius': '40% 0'
 });
@@ -10,7 +10,7 @@ var options2 = ({
     'rate': 30,
     'controls': true,
     'autoplay': true,
-    'width': '640px',
+    'width': '100%',
     'height': '390px',
 });
 

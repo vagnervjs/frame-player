@@ -80,7 +80,14 @@ p{
 }
 .small{ font-size: 0.6em; }
 
-#player2 { margin: 30px auto; }
+#player2 {
+    margin: 30px auto;
+    max-width: 640px;
+}
+
+.frameplayer {
+    max-width: 420px;
+}
 
 @media screen and (min-width:320px) {
     .usage{ height: 660px; }
