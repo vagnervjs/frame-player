@@ -46,6 +46,7 @@
 .fp-ctrl > .fp-select {
   margin-top: 10px;
   float: left;
+  text-transform: capitalize;
 }
 
 /* Loading Message */
