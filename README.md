@@ -10,20 +10,29 @@ The problem of today's HTML5 video is that it can't be played in-line on an HTML
 ##The Solution
 Create a player instead of playing video files, show a sequence of images at a certain rate.
 
+##Instalation
+
+- Download the [latest version](https://github.com/vagnervjs/frame-player/releases/) of Frame Player.
+
+- **OR** Use **bower** to install Frame Player
+
+```bash
+bower install frame-player
+```
+
+- Put the script and the style on your page
+
+```html
+    <link rel="stylesheet" href="path-to/frameplayer.css">
+    <script src="path-to/frameplayer.js"></script>
+```
 
 ##Usage
 
 - Insert this HTML code on any part of your page and set the data-src attribute for your JSON video file
 
 ```html
-	<div id="my-player" class="frameplayer" data-vidsrc="videos/video.json"></div>
-```
-
-- Put the script and the style on your page
-
-```html
-	<link rel="stylesheet" href="src/css/frameplayer.css">
-	<script src="src/js/frameplayer.js"></script>
+    <div id="my-player" class="frameplayer" data-vidsrc="videos/video.json"></div>
 ```
 
 - Set the options
@@ -46,19 +55,13 @@ var player = new FramePlayer('my-player', options);
 	player.play();
 ```
 
-- You also can use **bower** to install frame-player
-
-```bash
-bower install frame-player
-```
-
 ### Methods
 
 Method     | Parameters     | Returns            | Description
 ---        | ---            | ---                | ---
 `play()`  | None.          | Nothing.           | Start playing the video.
 `pause()` | None.          | Nothing.           | Pause the current video.
-`resume()`  | None.          | Nothing.           | Play the current video from the moment it was paused. 
+`resume()`  | None.          | Nothing.           | Play the current video from the moment it was paused.
 
 
 ##Generating the JSON Video File
@@ -77,14 +80,14 @@ ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
 		cd converter/nodejs
 		node app.js frameStart frameEnd folder/to/imgs/ json/video.json
 		```
-		
+
 	- Option 2: PHP
 
-		```bash	
+		```bash
 		cd converter/php
 		php to_data_uri.php frameStart frameEnd folder/to/imgs/ json/video.json
 		```
-		
+
 ## Development
 
 In order to run it locally you'll need to fetch some dependencies and a basic setup.
@@ -103,7 +106,7 @@ In order to run it locally you'll need to fetch some dependencies and a basic se
 
 3. To test your project, start the development server (using your prefered server) and open `http://localhost:8000`.
 
-    ```sh    
+    ```sh
     $ python -m SimpleHTTPServer 8080
     ```
 
