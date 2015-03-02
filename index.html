@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <title>Frame Player - A player based on images frames for mobile devices</title>
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
-    <!-- Prism.js for highlight -->
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/prism.css">
-    <script src="js/prism.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/vagnervjs/frame-player/master/src/css/frameplayer.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
     <!-- Open Graph -->
     <meta property="og:title" content="Frame Player"/>
@@ -27,12 +26,12 @@
     <!-- Sections -->
     <section class="player">
         <h1><span class="small">&#9658;</span> Frame Player</h1>
-        <div id="player2" data-vidsrc="videos/video02.json"></div>
+        <div id="player2" class="frameplayer" data-vidsrc="videos/video02.json"></div>
         <p>A video player without video files, just <strong>JSON</strong>. Based on "images frames" thought to mobile devices!</p>
     </section>
     <section class="customizable">
         <h2>Customizable</h2>
-        <div id="player1" class="players" data-vidsrc="videos/video01.json"></div>
+        <div id="player1" class="frameplayer" data-vidsrc="videos/video01.json"></div>
     </section>
     <section class="usage">
         <h2>Usage</h2>
@@ -91,46 +90,9 @@
         <p>Fork on <a href="https://github.com/vagnervjs/frame-player" target="_blank">Github</a></p>
     </footer>
 
-    <script src="js/frameplayer.js"></script>
-    <script>
-        var options1 = ({
-            'rate': 30,
-            'controls': false,
-            'autoplay': true,
-            'width': '400px',
-            'height': '260px',
-            'radius': '40% 0'
-        });
-        var options2 = ({
-            'rate': 30,
-            'controls': true,
-            'autoplay': true,
-            'width': '640px',
-            'height': '390px',
-        });
-
-        var player1 = new FramePlayer();
-        player1.load('player1', options1);
-        player1.play();
-
-        var player2 = new FramePlayer();
-        player2.load('player2', options2);
-        player2.play();
-    </script>
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-32909284-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
+    <script src="https://cdn.rawgit.com/vagnervjs/frame-player/master/src/js/frameplayer.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/ga.js"></script>
 </body>
 </html>
