@@ -38,21 +38,7 @@ var FramePlayer = function(el, options){
 
     if(this.controls){ this.createControlsBar(); }
 
-    // this.initialize();
-};
-
-FramePlayer.prototype.initialize = function() {
     this.initializeRequestAnimationFrame();
-    // this.runCanvasRenderer();
-};
-
-FramePlayer.prototype.runCanvasRenderer = function() {
-    var player = this;
-    var processFrame = function() {
-        window.requestAnimationFrame(processFrame);
-    };
-
-    window.requestAnimationFrame(processFrame);
 };
 
 FramePlayer.prototype.render = function(jsonVideoFile, player) {
@@ -70,7 +56,6 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
         container.setAttribute('class', 'fp-container');
         container.style.width = player.width;
         container.style.height = player.height;
-        // container.appendChild(img);
 
         player.canvas = document.createElement('canvas');
         player.context = player.canvas.getContext('2d');
@@ -243,9 +228,7 @@ FramePlayer.prototype.getFile = function(src, callback){
 FramePlayer.prototype.initializeRequestAnimationFrame = function() {
     // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
     // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-     
     // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
-     
     // MIT license
 
     var lastTime = 0;
