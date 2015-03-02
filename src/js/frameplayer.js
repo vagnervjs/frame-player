@@ -51,16 +51,11 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
         delta,
         i = -1;
 
-    var img = document.createElement('img'),
-        container = document.createElement('div');
-
-    container.setAttribute('class', 'fp-container');
+    var img = document.createElement('img');
 
     player.canvas = document.createElement('canvas');
     player.context = player.canvas.getContext('2d');
-
-    container.appendChild(player.canvas);
-    player.divCont.appendChild(container);
+    player.divCont.appendChild(player.canvas);
 
     var processFrame = function() {
         now = Date.now();
