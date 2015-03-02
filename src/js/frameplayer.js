@@ -1,13 +1,12 @@
 /*
-   frameplayer.js
-   A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
+    frameplayer.js
+    A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
 
-   @category
-   @author Vagner Santana
-   @link http://github.com/vagnervjs/frame-video
-   @version:0.1
-   @since: 04/10/2013
- */
+    @author: Vagner Santana
+    @link: http://github.com/vagnervjs/frame-video
+    @version: 0.2.0
+    @since: 04/10/2013
+*/
 
 var FramePlayer = function(el, options) {
     this.divCont = document.getElementById(el);
