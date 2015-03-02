@@ -6,8 +6,9 @@
     <link rel="shortcut icon" href="favicon.ico">
 
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/prism.css">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/vagnervjs/frame-player/master/src/css/frameplayer.css">
+    <link rel="stylesheet" href="css/libs/prism.css">
+    <link rel="stylesheet" href="css/libs/frameplayer.css">
+
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
     <!-- Open Graph -->
@@ -26,6 +27,9 @@
     <!-- Sections -->
     <section class="player">
         <h1><span class="small">&#9658;</span> Frame Player</h1>
+        <iframe class="gh-btn" id="gh-star" src="http://ghbtns.com/github-btn.html?user=vagnervjs&repo=frame-player&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+        <iframe class="gh-btn" id="gh-fork" src="http://ghbtns.com/github-btn.html?user=vagnervjs&repo=frame-player&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+
         <div id="player2" class="frameplayer" data-vidsrc="videos/video02.json"></div>
         <p>A video player without video files, just <strong>JSON</strong>. Based on "images frames" thought to mobile devices!</p>
     </section>
@@ -54,8 +58,7 @@
                     // 'radius': '50%'
                 });
 
-                var player = new FramePlayer();
-                player.load('my-player', options);
+                var player = new FramePlayer('my-player', options);
                 player.play();
             </code>
             </pre>
@@ -90,9 +93,9 @@
         <p>Fork on <a href="https://github.com/vagnervjs/frame-player" target="_blank">Github</a></p>
     </footer>
 
-    <script src="https://cdn.rawgit.com/vagnervjs/frame-player/master/src/js/frameplayer.js"></script>
-    <script src="js/prism.js"></script>
+    <script src="js/libs/frameplayer.js"></script>
+    <script src="js/libs/prism.js"></script>
+    <script src="js/libs/ga.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/ga.js"></script>
 </body>
 </html>
