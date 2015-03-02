@@ -51,16 +51,11 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
         delta,
         i = -1;
 
-    var img = document.createElement('img'),
-        container = document.createElement('div');
-
-    container.setAttribute('class', 'fp-container');
+    var img = document.createElement('img');
 
     player.canvas = document.createElement('canvas');
     player.context = player.canvas.getContext('2d');
-
-    container.appendChild(player.canvas);
-    player.divCont.appendChild(container);
+    player.divCont.appendChild(player.canvas);
 
     var processFrame = function() {
         now = Date.now();
@@ -118,25 +113,18 @@ FramePlayer.prototype.createControlBar = function() {
 
     // Filter Select
     var selectFilter = document.createElement('select'),
-        option1 = document.createElement('option'),
-        option2 = document.createElement('option'),
-        option3 = document.createElement('option'),
-        option4 = document.createElement('option');
+        options = ['normal', 'grayscale', 'sepia', 'invert'];
+
+    for (var i = 0, t = options.length; i < t; i++) {
+        var $option = document.createElement('option');
+
+        $option.setAttribute('value', options[i]);
+        $option.innerHTML = options[i];
+        selectFilter.appendChild($option);
+    }
 
     selectFilter.setAttribute('id', 'filter-' + player.elem);
     selectFilter.setAttribute('class', 'fp-select');
-    option1.setAttribute('value', 'normal');
-    option2.setAttribute('value', 'grayscale');
-    option3.setAttribute('value', 'sepia');
-    option4.setAttribute('value', 'invert');
-    option1.innerHTML = 'Normal';
-    option2.innerHTML = 'Grayscale';
-    option3.innerHTML = 'Sepia';
-    option4.innerHTML = 'Invert';
-    selectFilter.appendChild(option1);
-    selectFilter.appendChild(option2);
-    selectFilter.appendChild(option3);
-    selectFilter.appendChild(option4);
     selectFilter.addEventListener('change', function() {
             player.setFilter(this.value);
         }, false
@@ -222,7 +210,7 @@ FramePlayer.prototype.getFile = function(src, callback) {
             };
         }
     } else {
-        console.log('Error loading file.');
+        throw('Error loading file.');
     }
 };
 

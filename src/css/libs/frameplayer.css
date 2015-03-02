@@ -14,13 +14,7 @@
   position: relative;
 }
 
-.frameplayer .fp-container {
-  margin: 0;
-  position: absolute;
-}
-
-.frameplayer .fp-container,
-.frameplayer .fp-container canvas {
+.frameplayer canvas {
   width: 100%;
   height: 100%;
 }
@@ -46,6 +40,7 @@
 .fp-ctrl > .fp-select {
   margin-top: 10px;
   float: left;
+  text-transform: capitalize;
 }
 
 /* Loading Message */
