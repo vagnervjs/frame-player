@@ -5,10 +5,10 @@ var gulp = require('gulp'),
 	del = require('del');
 
 var paths = {
-	build: ['dist'],
+	prefix: 'frameplayer.min',
+	build: 'dist',
 	js: ['src/*.js'],
-	css: ['src/*.css'],
-	prefix: 'frameplayer.min'
+	css: ['src/*.css']
 };
 
 gulp.task('clean', function(cb) {
@@ -19,14 +19,14 @@ gulp.task('js', function() {
 	return gulp.src(paths.js)
 		.pipe(uglify())
 		.pipe(concat(paths.prefix + '.js'))
-		.pipe(gulp.dest(paths.build[0]));
+		.pipe(gulp.dest(paths.build));
 });
 
 gulp.task('css', function() {
     return gulp.src(paths.css)
 		.pipe(cssmin())
 		.pipe(concat(paths.prefix +  '.css'))
-		.pipe(gulp.dest(paths.build[0]));
+		.pipe(gulp.dest(paths.build));
 });
 
 // Watch
