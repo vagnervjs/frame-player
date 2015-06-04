@@ -3,6 +3,7 @@
     A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
 
     @author: Vagner Santana
+    @author: Thomoglou Panagiotis / http://github.com/hellopath
     @link: http://github.com/vagnervjs/frame-video
     @version: 0.2.0
     @since: 04/10/2013
@@ -18,10 +19,16 @@ var FramePlayer = function(el, options) {
     this.width = '480px',
     this.height = '320px';
     this.backwards = false;
+    this.currentFrame = -1;
     this.radius = null;
 
     this.setOptions(options);
     this.initializeRequestAnimationFrame();
+
+    this.img = document.createElement('img');
+    this.canvas = document.createElement('canvas');
+    this.context = this.canvas.getContext('2d');
+    this.divCont.appendChild(this.canvas);
 };
 
 FramePlayer.prototype.setOptions = function(options) {
@@ -46,21 +53,16 @@ FramePlayer.prototype.setOptions = function(options) {
     }
 };
 
-FramePlayer.prototype.render = function(jsonVideoFile, player) {
+FramePlayer.prototype.render = function(player) {
+
     var now,
         then = Date.now(),
         interval = 1000/player.rate,
         delta,
-        videoFramesNum = jsonVideoFile.frames.length,
-        i = -1;
-
-    var img = document.createElement('img');
-
-    player.canvas = document.createElement('canvas');
-    player.context = player.canvas.getContext('2d');
-    player.divCont.appendChild(player.canvas);
+        videoFramesNum = player.jsonVideoFile.frames.length;
 
     var processFrame = function() {
+
         now = Date.now();
         delta = now - then;
 
@@ -69,23 +71,25 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
 
             if(!player.paused) {
 
-                i = (player.backwards) ? i-=1 : i+=1;
+                player.currentFrame = (player.backwards) ? player.currentFrame -= 1 : player.currentFrame += 1;
 
-                if (i >= videoFramesNum) {
-                    i = 0;
-                } else if (i < 0) {
-                    i = videoFramesNum-1;
-                }
+                if (player.currentFrame >= videoFramesNum) player.currentFrame = 0;
+                else if (player.currentFrame < 0) player.currentFrame = videoFramesNum-1;
 
-                img.src = jsonVideoFile.frames[i];
-                player.context.drawImage(img, 0, 0, player.canvas.width, player.canvas.height);
+                player.drawFrame(player);
             }
         }
 
         window.requestAnimationFrame(processFrame);
     };
 
+
     window.requestAnimationFrame(processFrame);
+};
+
+FramePlayer.prototype.drawFrame = function(player) {
+    player.img.src = player.jsonVideoFile.frames[player.currentFrame];
+    player.context.drawImage(player.img, 0, 0, player.canvas.width, player.canvas.height);
 };
 
 FramePlayer.prototype.createControlBar = function() {
@@ -150,12 +154,42 @@ FramePlayer.prototype.createControlBar = function() {
     );
     controlBar.appendChild(selectFilter);
 
+    var toFrameLabel = document.createElement('label'),
+        toFrameInput = document.createElement('input'),
+        toFrameSubmit = document.createElement('input');
+
+    toFrameLabel.className =  "to-frame";
+
+    toFrameInput.type = 'text';
+    toFrameInput.name = 'frame';
+    toFrameInput.value = 30;
+    toFrameInput.className =  "to-frame";
+
+    toFrameSubmit.type = 'submit';
+    toFrameSubmit.value = 'go to frame';
+
+    toFrameSubmit.onclick = function() {
+        value = parseInt(toFrameInput.value, 10)
+        _self.gotoFrame(value);
+    }
+
+    toFrameLabel.appendChild(toFrameInput);
+    toFrameLabel.appendChild(toFrameSubmit);
+    controlBar.appendChild(toFrameLabel);
+
     // Add control bar
     this.divCont.appendChild(controlBar);
 };
 
 FramePlayer.prototype.play = function() {
-    this.getFile(this.jsonVideoSrc, this.render);
+    this.getFile(this.jsonVideoSrc, function(player) {
+        if (player.paused) {
+            player.render(player);
+            player.drawFrame(player);
+        }else{
+            player.render(player);
+        }
+    });
 };
 
 FramePlayer.prototype.resume = function() {
@@ -181,6 +215,18 @@ FramePlayer.prototype.reverse = function() {
     this.backwards = !this.backwards;
     value = this.backwards ? 'Forward' :'Backward';
     btnBackwards.innerHTML = value;
+};
+
+FramePlayer.prototype.gotoFrame = function(value) {
+
+    if (value !== parseInt(value, 10)) return;
+
+    this.currentFrame = value;
+    if (this.jsonVideoFile === undefined) {
+        this.play();
+    } else {
+        this.drawFrame(this);
+    }
 };
 
 FramePlayer.prototype.setFilter = function(filter) {
@@ -223,14 +269,16 @@ FramePlayer.prototype.getFile = function(src, callback) {
         if (typeof(_HTTP.onload) !== undefined) {
             _HTTP.onload = function() {
                 _self.divCont.removeChild(p);
-                callback(JSON.parse(this.responseText), _self);
+                _self.jsonVideoFile = JSON.parse(this.responseText)
+                callback(_self);
                 _HTTP = null;
             };
         } else {
             _HTTP.onreadystatechange = function() {
                 if (_HTTP.readyState === 4) {
                     _self.divCont.removeChild(p);
-                    callback(JSON.parse(this.responseText), _self);
+                    _self.jsonVideoFile = JSON.parse(this.responseText)
+                    callback(_self);
                     _HTTP = null;
                 }
             };

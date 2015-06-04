@@ -5,10 +5,10 @@
     <title>Frame Player</title>
 
     <!-- Development -->
-    <!-- <link rel="stylesheet" href="src/frameplayer.css"> -->
+    <link rel="stylesheet" href="src/frameplayer.css">
 
     <!-- Production -->
-    <link rel="stylesheet" href="dist/frameplayer.min.css">
+    <!-- <link rel="stylesheet" href="dist/frameplayer.min.css"> -->
 
     <style>
       .frameplayer {
@@ -23,10 +23,10 @@
 
 
   <!-- Development -->
-  <!-- <script src="src/frameplayer.js"></script> -->
+  <script src="src/frameplayer.js"></script>
 
   <!-- Production -->
-  <script src="dist/frameplayer.min.js"></script>
+  <!-- <script src="dist/frameplayer.min.js"></script> -->
 
   <script>
       var fpOptions = ({
@@ -39,10 +39,13 @@
       });
 
       var player01 = new FramePlayer('my-player-01', fpOptions);
+      
+      fpOptions.autoplay = false
       var player02 = new FramePlayer('my-player-02', fpOptions);
 
       player01.play();
-      player02.play();
+      player02.gotoFrame(30);
+
   </script>
 </body>
 </html>
