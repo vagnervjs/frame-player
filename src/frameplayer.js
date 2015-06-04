@@ -17,6 +17,7 @@ var FramePlayer = function(el, options) {
     this.paused = false,
     this.width = '480px',
     this.height = '320px';
+    this.backwards = false;
     this.radius = null;
 
     this.setOptions(options);
@@ -29,6 +30,7 @@ FramePlayer.prototype.setOptions = function(options) {
     if ('autoplay' in options) { if (!options.autoplay) { this.paused = true; } }
     if ('width' in options) { this.width = options.width; }
     if ('height' in options) { this.height = options.height; }
+    if ('backwards' in options) { this.backwards = options.backwards; }
     if ('radius' in options) {
         var currentStyle = document.createElement('style');
             currentStyle.setAttribute('id', 'style-' + this.elem);
@@ -38,7 +40,7 @@ FramePlayer.prototype.setOptions = function(options) {
 
     this.divCont.style.width = this.width;
     this.divCont.style.height = this.height;
-
+    
     if(this.controls) {
         this.createControlBar();
     }
@@ -49,6 +51,7 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
         then = Date.now(),
         interval = 1000/player.rate,
         delta,
+        videoFramesNum = jsonVideoFile.frames.length,
         i = -1;
 
     var img = document.createElement('img');
@@ -65,10 +68,15 @@ FramePlayer.prototype.render = function(jsonVideoFile, player) {
             then = now - (delta % interval);
 
             if(!player.paused) {
-                i++;
-                if (i >= jsonVideoFile.frames.length) {
+
+                i = (player.backwards) ? i-=1 : i+=1;
+
+                if (i >= videoFramesNum) {
                     i = 0;
+                } else if (i < 0) {
+                    i = videoFramesNum-1;
                 }
+
                 img.src = jsonVideoFile.frames[i];
                 player.context.drawImage(img, 0, 0, player.canvas.width, player.canvas.height);
             }
@@ -107,6 +115,17 @@ FramePlayer.prototype.createControlBar = function() {
         }, false
     );
     controlBar.appendChild(btnPlay);
+
+    // Backwards Button
+    var btnBackwards = document.createElement('button');
+    btnBackwards.setAttribute('id', 'backwards-' + _self.elem);
+    btnBackwards.setAttribute('class', 'fp-btn');
+    btnBackwards.innerHTML = 'Backward';
+    btnBackwards.addEventListener('click', function() {
+            _self.reverse()
+        }, false
+    );
+    controlBar.appendChild(btnBackwards);
 
     // Display Play/Pause Button
     _self.paused ? btnPause.style.display = 'none' : btnPlay.style.display = 'none';
@@ -155,6 +174,13 @@ FramePlayer.prototype.pause = function() {
     btnPlay.style.display = 'block';
     btnPause.style.display = 'none';
     this.paused = true;
+};
+
+FramePlayer.prototype.reverse = function() {
+    var btnBackwards = document.getElementById('backwards-' + this.elem);
+    this.backwards = !this.backwards;
+    value = this.backwards ? 'Forward' :'Backward';
+    btnBackwards.innerHTML = value;
 };
 
 FramePlayer.prototype.setFilter = function(filter) {
