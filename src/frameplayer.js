@@ -3,7 +3,6 @@
     A video player without video files, just JSON. Based on "images frames" thought to mobile devices!
 
     @author: Vagner Santana
-    @author: Thomoglou Panagiotis / http://github.com/hellopath
     @link: http://github.com/vagnervjs/frame-video
     @version: 0.2.0
     @since: 04/10/2013
