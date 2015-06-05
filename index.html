@@ -34,15 +34,19 @@
           'controls': true,
           'autoplay': true,
           'backwards': false,
+          'startFrame': 10,
           'width': '400px',
           'height': '260px'
       });
 
       var player01 = new FramePlayer('my-player-01', fpOptions);
+      
+      fpOptions.autoplay = false
       var player02 = new FramePlayer('my-player-02', fpOptions);
 
       player01.play();
-      player02.play();
+      player02.gotoFrame(30);
+
   </script>
 </body>
 </html>

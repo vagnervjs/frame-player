@@ -42,6 +42,8 @@ var options = ({
     'rate': 30,
     'controls': false,
     'autoplay': true,
+    'backwards': false,
+    'startFrame': 10,
     'width': '640px',
     'height': '390px',
     // 'radius': '50%'
@@ -57,11 +59,12 @@ var player = new FramePlayer('my-player', options);
 
 ### Methods
 
-Method     | Parameters     | Returns            | Description
----        | ---            | ---                | ---
-`play()`  | None.          | Nothing.           | Start playing the video.
-`pause()` | None.          | Nothing.           | Pause the current video.
-`resume()`  | None.          | Nothing.           | Play the current video from the moment it was paused.
+Method          | Parameters     | Returns            | Description
+---             | ---            | ---                | ---
+`play()`        | None.          | Nothing.           | Start playing the video.
+`pause()`       | None.          | Nothing.           | Pause the current video.
+`resume()`      | None.          | Nothing.           | Play the current video from the moment it was paused.
+`gotoFrame()`   | Integer.       | Nothing.           | Jumps to a specific frame of the video.
 
 
 ##Generating the JSON Video File
