@@ -19,6 +19,7 @@ var FramePlayer = function(el, options) {
     this.height = '320px';
     this.backwards = false;
     this.currentFrame = -1;
+    this.startFrame = 0
     this.radius = null;
 
     this.setOptions(options);
@@ -36,6 +37,7 @@ FramePlayer.prototype.setOptions = function(options) {
     if ('autoplay' in options) { if (!options.autoplay) { this.paused = true; } }
     if ('width' in options) { this.width = options.width; }
     if ('height' in options) { this.height = options.height; }
+    if ('startFrame' in options) { this.startFrame = this.currentFrame = options.startFrame; }
     if ('backwards' in options) { this.backwards = options.backwards; }
     if ('radius' in options) {
         var currentStyle = document.createElement('style');
@@ -161,8 +163,9 @@ FramePlayer.prototype.createControlBar = function() {
 
     toFrameInput.type = 'text';
     toFrameInput.name = 'frame';
-    toFrameInput.value = 30;
+    toFrameInput.value = _self.startFrame;
     toFrameInput.className =  "to-frame";
+    _self.toFrameInput = toFrameInput;
 
     toFrameSubmit.type = 'submit';
     toFrameSubmit.value = 'go to frame';
@@ -220,7 +223,8 @@ FramePlayer.prototype.gotoFrame = function(value) {
 
     if (value !== parseInt(value, 10)) return;
 
-    this.currentFrame = value;
+    this.currentFrame = this.startFrame = this.toFrameInput.value = value;
+
     if (this.jsonVideoFile === undefined) {
         this.play();
     } else {
