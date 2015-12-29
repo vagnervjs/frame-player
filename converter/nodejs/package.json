@@ -23,5 +23,10 @@
   "devDependencies": {
     "mime": "^1.2.11",
     "path": "^0.4.9"
+  },
+  "dependencies": {
+    "fluent-ffmpeg": "^2.0.1",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.0"
   }
 }
