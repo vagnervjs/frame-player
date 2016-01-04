@@ -3,7 +3,6 @@ var fs = require('fs'),
     mime = require('mime'),
     path = require('path'),
     ffmpeg = require('fluent-ffmpeg'),
-    stream = require('stream'),
     mkdirp = require('mkdirp');
 
 /*
