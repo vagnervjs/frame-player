@@ -4,26 +4,55 @@ var fs = require('fs'),
     path = require('path'),
     ffmpeg = require('fluent-ffmpeg'),
     stream = require('stream'),
-    mkdirp = require('mkdirp'),
-    rimraf = require('rimraf');
+    mkdirp = require('mkdirp');
 
-var dirName = path.resolve('/tmp/', '.images');
+/*
+ *    Possible argument positions
+ *
+ *    converter pathVideo(string) pathVideoFrame(string) startVideoTime(number) endVideoTime(number)
+ *    converter pathVideo(string) pathVideoFrame(string) startVideoTime(number)
+ *    converter pathVideo(string) pathVideoFrame(string)
+ *
+ */
 
+if(process.argv.length > 3) {
+    var pathVideo = process.argv[2],
+        pathVideoFrame = process.argv[3],
+        startVideoTime = parseInt(process.argv[4]),
+        endVideoTime = parseInt(process.argv[5]),
+        tempDirName = path.resolve('/tmp/', '.images');
+    var json = {};
 
-function saveVideoFrames(_path, startTime, endTime){
-    // Create or clean image dir if it exists
-    mkdirp(dirName, function(err){
-        console.log('Existes');
-        fs.readdirSync(dirName).map(function(elem, index){
-            fs.unlinkSync(path.resolve(dirName, elem));
+    Promise.resolve().then(function(){
+        createOrCleanTempDir(tempDirName);
+    }).
+    then(function(){
+        return createVideoFrames(pathVideo, startVideoTime, endVideoTime, tempDirName);
+    }).
+    then(function(){
+        json.frames = generateStringVideoFrames(tempDirName);
+        saveVideoFrame(pathVideoFrame, JSON.stringify(json));
+    }).
+    catch(function(err){
+        console.log('Error -', err);
+    })
+} else {
+    console.error('Not enough parameters supplied!');
+}
+
+function createOrCleanTempDir(tempDirName){
+    mkdirp(tempDirName, function(err){
+        fs.readdirSync(tempDirName).map(function(elem, index){
+            fs.unlinkSync(path.resolve(tempDirName, elem));
         });
     })
+}
 
-    var promise = new Promise(function(resolve, reject){
+function createVideoFrames(_path, startTime, endTime, tempDirName){
+    return promise = new Promise(function(resolve, reject){
         var command = ffmpeg(path.resolve(_path))
         .noAudio()
         .on('end', function(){
-            console.log('end encoding');
             resolve();
         })
         .on('error', function(err){
@@ -37,20 +66,14 @@ function saveVideoFrames(_path, startTime, endTime){
             command = command.duration(endTime);
         }
 
-        command.save(path.resolve(dirName, 'image-%07d.jpg'));
-
-    })
-
-    return promise;
+        command.save(path.resolve(tempDirName, 'image-%07d.jpg'));
+    });
 }
 
-function generateFrameVideo(){
-    console.log('Start with decoding')
-    var ret = fs.readdirSync(dirName).sort().map(function(elem, index){
-        return base64Img(path.resolve(dirName, elem));
+function generateStringVideoFrames(tempDirName){
+    return fs.readdirSync(tempDirName).sort().map(function(elem, index){
+        return base64Img(path.resolve(tempDirName, elem));
     })
-    console.log('Finish with decoding')
-    return ret;
 }
 
 function base64Img(src) {
@@ -58,64 +81,6 @@ function base64Img(src) {
     return util.format('data:%s;base64,%s', mime.lookup(src), data);
 }
 
-
-/*
- *    Possible argument positions
- *
- *    converter frameStart(number) frameEnd(number) folder(string) outputFile(string)
- *    converter folder(string) outputFile(string)
- *
- */
-
-if(process.argv.length > 2) {
-    var pathVideo = process.argv[2],
-        pathVideoFrame = process.argv[3],
-        startVideoTime = parseInt(process.argv[4]),
-        endVideoTime = parseInt(process.argv[5]);
-
-    var json = {};
-
-
-    // console.log(process.argv);
-    saveVideoFrames(pathVideo, startVideoTime, endVideoTime).then(function(data, err){
-        json.frames = generateFrameVideo();
-        console.log(json.frames.length);
-
-        fs.writeFile(pathVideoFrame, JSON.stringify(json), function(err) {
-            if(err) {
-                console.log(err);
-            } else {
-                console.log('Completed!');
-            }
-        });        
-    });
-
-    // // Check if the first argument is a number or string
-    // if(!isNaN(parseInt(process.argv[2]))) {
-    //     var frameStart = process.argv[2],
-    //         frameEnd = process.argv[3],
-    //         folder = process.argv[4],
-    //         outputFile = process.argv[5],
-    //         dataUri = null,
-    //         framesImg = [];
-    // } else {
-    //     var frameStart = 1,
-    //         frameEnd = fs.readdirSync(process.argv[2]).length,
-    //         folder = process.argv[2],
-    //         outputFile = process.argv[3];
-    // }
-    //
-    // var dataUri = null,
-    //     framesImg = [],
-    //     fileTypeExt = path.extname(fs.readdirSync(folder)[0]); //If there's a better way, please do it...
-    //
-    // for (; frameStart <= frameEnd; frameStart++) {
-    //     console.log('Converting file: ' + frameStart);
-    //     dataUri = base64Img(folder + frameStart + fileTypeExt);
-    //     framesImg[frameStart] = dataUri;
-    // }
-    //
-    // framesImg.splice(null, 1);
-} else {
-    console.error('Not enough parameters supplied!');
+function saveVideoFrame(_path, data){
+    fs.writeFileSync(_path, data);
 }
