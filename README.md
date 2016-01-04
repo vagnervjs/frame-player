@@ -69,22 +69,22 @@ Method          | Parameters     | Returns            | Description
 
 ##Generating the JSON Video File
 
-- Use ffmpeg to generate the frames from a video file:
+- Option 1: Node.js
 
-```bash
-ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
-```
+    ```bash
+    cd converter/nodejs
+    node app.js path/to/video/file path/to/video.json/file startTime endTime
+    ```
 
-- Convert all frames on a single JSON file
+- Option 2: PHP
 
-	- Option 1: Node.js
+    - Use ffmpeg to generate the frames from a video file:
 
-		```bash
-		cd converter/nodejs
-		node app.js frameStart frameEnd folder/to/imgs/ json/video.json
-		```
+    ```bash
+    ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
+    ```
 
-	- Option 2: PHP
+    - Convert all frames on a single JSON file
 
 		```bash
 		cd converter/php

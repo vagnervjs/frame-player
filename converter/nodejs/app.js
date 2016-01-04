@@ -63,7 +63,10 @@ function createVideoFrames(_path, startTime, endTime, tempDirName){
             command = command.seekInput(startTime);
         }
         if (endTime){
-            command = command.duration(endTime);
+            if (startTime > endTime){
+                reject('Start time must be lower than end time')
+            }
+            command = command.duration(endTime - startTime);
         }
 
         command.save(path.resolve(tempDirName, 'image-%07d.jpg'));
