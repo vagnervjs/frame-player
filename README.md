@@ -67,7 +67,7 @@ Method          | Parameters     | Returns            | Description
 `gotoFrame()`   | Integer.       | Nothing.           | Jumps to a specific frame of the video.
 
 
-##Generating the JSON Video File
+##Generating the JSON Video File (ffmpeg lib must be installed)
 
 - Option 1: Node.js
 
