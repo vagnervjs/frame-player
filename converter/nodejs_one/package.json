@@ -1,0 +1,17 @@
+{
+  "name": "nodejs_one",
+  "version": "1.0.0",
+  "description": "One command converter from video file to json base64 frames",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AlexBazer",
+  "license": "ISC",
+  "devDependencies": {
+    "fluent-ffmpeg": "^2.0.1",
+    "mime": "^1.3.4",
+    "mkdirp": "^0.5.1",
+    "path": "^0.12.7"
+  }
+}

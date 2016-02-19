@@ -67,24 +67,37 @@ Method          | Parameters     | Returns            | Description
 `gotoFrame()`   | Integer.       | Nothing.           | Jumps to a specific frame of the video.
 
 
-##Generating the JSON Video File
+##Generating the JSON Video File (ffmpeg lib must be installed)
 
-- Use ffmpeg to generate the frames from a video file:
+    - Option 1: Node.js - single command
 
-```bash
-ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
-```
+        ```bash
+        cd converter/nodejs_one
+        node app.js path/to/video/file path/to/video.json/file startTime endTime
+        ```
 
-- Convert all frames on a single JSON file
+	- Option 2: Node.js
 
-	- Option 1: Node.js
+        - Use ffmpeg to generate the frames from a video file:
+
+        ```bash
+        ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
+        ```
+
+        - Convert all frames on a single JSON file
 
 		```bash
 		cd converter/nodejs
 		node app.js frameStart frameEnd folder/to/imgs/ json/video.json
 		```
 
-	- Option 2: PHP
+	- Option 3: PHP
+
+        - Use ffmpeg to generate the frames from a video file:
+
+        ```bash
+        ffmpeg -i video.mp4 -an -f image2 "%d.jpg"
+        ```
 
 		```bash
 		cd converter/php
