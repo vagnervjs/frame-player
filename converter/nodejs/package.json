@@ -21,7 +21,7 @@
     "url": "https://github.com/vagnervjs/frame-player/issues"
   },
   "devDependencies": {
-    "mime": "^1.2.11",
-    "path": "^0.4.9"
+    "mime": "^4.0.7",
+    "path": "^0.12.7"
   }
 }

@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/vagnervjs/frame-player",
   "devDependencies": {
-    "del": "^1.1.1",
-    "gulp": "^3.8.11",
-    "gulp-concat": "^2.5.2",
-    "gulp-cssmin": "^0.1.6",
-    "gulp-uglify": "^1.1.0"
+    "del": "^8.0.0",
+    "gulp": "^5.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-uglify": "^3.0.2"
   }
 }
